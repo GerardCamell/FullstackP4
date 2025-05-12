@@ -24,3 +24,26 @@ export async function registrarUsuario(req, res) {
     res.status(500).json({ error: error.message });
   }
 }
+
+export async function loginUsuario(req, res) {
+  try {
+    const { email, password } = req.body;
+    // Buscar el user por el emilio
+    const usuario = await Usuario.findOne({ email });
+    if (!usuario) {
+      throw new Error('El email o la contraseña son incorrectos');
+    }
+    //Comparamos la password de la database con la password que escribira el user.
+    const passwordValido = await bcrypt.compare(password, usuario.password);
+    if (!passwordValido) {
+      throw new Error('La contraseña es incorrecta');
+    }
+     //Guardar el ID del usuario en la sesión correspondiente :P
+    req.session.userId = usuario._id;
+
+    res.status(200).json({name: usuario.name, email: usuario.email, role: usuario.role });
+    }catch (error) {
+    throw new Error('Error al iniciar sesión: ' + error.message);
+  }
+}
+
