@@ -1,0 +1,10 @@
+# Dependencias
+node_modules/
+
+# Entorno
+.env
+
+# Docker
+
+**/mongo_data/
+docker-compose.override.yml
