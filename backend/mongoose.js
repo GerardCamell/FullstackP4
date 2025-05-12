@@ -1,13 +1,11 @@
 import mongoose from 'mongoose';
 
-const uri = 'mongodb://localhost:27017/FullsCat'; 
-
 export async function connectDB() {
   try {
-    await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-    console.log('Conexión a MongoDB establecida con éxito');
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log(`Conectadoo a MongoDB: ${process.env.MONGO_URI}`);
   } catch (error) {
     console.error('Error al conectar a MongoDB:', error);
-    process.exit(1);
+    process.exit(1); 
   }
 }
