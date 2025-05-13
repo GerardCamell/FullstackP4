@@ -4,6 +4,10 @@ import cors          from 'cors';
 import session       from 'express-session';
 import MongoStore    from 'connect-mongo';
 import { connectDB } from './mongoose.js'; 
+import authRouter         from './routes/auth.js';
+import usuariosRouter     from './routes/usuarios.js';
+import voluntariadosRouter from './routes/voluntariados.js';
+import { requireAuth }    from './utils/authMiddleware.js';
 
 dotenv.config();  
 
@@ -31,6 +35,9 @@ async function startServer() {
   app.get('/health', (_req, res) => {
     res.json({ status: 'ok' });
   });
+  app.use('/auth', authRouter);
+  app.use('/usuarios', requireAuth, usuariosRouter);
+  app.use('/voluntariados', voluntariadosRouter);
 
   const PORT = process.env.PORT || 4000;
   app.listen(PORT, () => {
