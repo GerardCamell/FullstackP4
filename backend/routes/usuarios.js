@@ -1,12 +1,19 @@
-import express from 'express';
-import { registrarUsuario, loginUsuario } from '../controllers/usuario.js';
+// backend/routes/usuarios.js
+import { Router } from 'express';
+import * as usuariosController from '../controllers/usuarioController.js';
+import { requireAuth, requireRole } from '../utils/authMiddleware.js';
 
-const router = express.Router();
+const router = Router();
 
-// Ruta para registrar un usuario
-router.post('/registro', registrarUsuario);
+// Todas las rutas de usuario requieren sesión
+router.use(requireAuth);
 
-// Ruta para iniciar sesión
-router.post('/login', loginUsuario);
+// Listar (solo admin)
+router.get('/', requireRole('admin'), usuariosController.listarUsuarios);
+
+// Fetch/update/delete de un usuario (admin o el propio)
+router.get('/:id', usuariosController.obtenerUsuario);
+router.put('/:id', usuariosController.actualizarUsuario);
+router.delete('/:id', requireRole('admin'), usuariosController.eliminarUsuario);
 
 export default router;
