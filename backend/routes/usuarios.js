@@ -5,18 +5,15 @@ import { requireAuth, requireRole } from '../utils/authMiddleware.js';
 
 const router = Router();
 
+// Todas las rutas de usuario requieren sesión
 router.use(requireAuth);
 
-// Listar todos los usuarios (solo admin)
+// Listar (solo admin)
 router.get('/', requireRole('admin'), usuariosController.listarUsuarios);
 
-// Obtener datos de un usuario (admin o el propio usuario)
+// Fetch/update/delete de un usuario (admin o el propio)
 router.get('/:id', usuariosController.obtenerUsuario);
-
-// Actualizar usuario (admin o el propio usuario)
 router.put('/:id', usuariosController.actualizarUsuario);
-
-// Eliminar usuario (solo admin)
 router.delete('/:id', requireRole('admin'), usuariosController.eliminarUsuario);
 
 export default router;
