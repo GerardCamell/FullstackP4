@@ -1,11 +1,32 @@
-import mongoose from 'mongoose';
+import { Schema, model, Types } from 'mongoose';
 
-const voluntariadoSchema = new mongoose.Schema({
-  titulo: { type: String, required: true },
-  usuario: { type: String, required: true },
-  fecha: { type: String, required: true },
-  descripcion: { type: String, required: true },
-  tipo: { type: String, required: true },
+const voluntariadoSchema = new Schema({
+  titulo: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  descripcion: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  fecha: {
+    type: Date,
+    default: Date.now
+  },
+  tipo: {
+    type: String,
+    enum: ['Petición', 'Oferta'],
+    required: true
+  },
+  creadoPor: {
+    type: Types.ObjectId,
+    ref: 'Usuario',
+    required: true
+  }
+}, {
+  timestamps: true
 });
 
-export const Voluntariado = mongoose.model('Voluntariado', voluntariadoSchema);
+export const Voluntariado = model('Voluntariado', voluntariadoSchema);
