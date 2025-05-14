@@ -6,11 +6,8 @@ import MongoStore    from 'connect-mongo';
 import { connectDB } from './mongoose.js'; 
 import authRouter         from './routes/auth.js';
 import usuariosRouter     from './routes/usuarios.js';
-import voluntariadosRouter from './routes/voluntariado.js';
+import voluntariadosRouter from './routes/voluntariados.js';
 import { requireAuth }    from './utils/authMiddleware.js';
-import { graphqlHTTP } from 'express-graphql';
-import schema from './graphql/schema.js';
-import root from './graphql/resolvers.js';
 
 dotenv.config();  
 
@@ -34,16 +31,6 @@ async function startServer() {
     cookie:           { secure: false, httpOnly: true }
   }));
 
-  // Configuración de GraphQL
-   app.use('/graphql', graphqlHTTP((req) => ({
-    schema: schema,
-    rootValue: root,
-    graphiql: process.env.NODE_ENV === 'development',
-    context: { 
-      req, 
-      user: req.session.user // Acceso al usuario en los resolvers
-    }
-  })));
   // Ruta de comprobación
   app.get('/health', (_req, res) => {
     res.json({ status: 'ok' });

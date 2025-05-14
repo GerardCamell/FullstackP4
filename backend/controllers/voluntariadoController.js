@@ -1,4 +1,4 @@
-import Voluntariado from '../models/voluntariado.js';
+import { Voluntariado } from '../models/voluntariado.js';
 
 // Crear nuevo voluntariado
 export async function crearVoluntariado(req, res) {

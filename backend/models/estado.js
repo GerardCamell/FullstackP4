@@ -5,5 +5,4 @@ const estadoSchema = new mongoose.Schema({
   email: { type: String },
 });
 
-const Estado = mongoose.model('Estado', estadoSchema);
-export default Estado;
+export const Estado = mongoose.model('Estado', estadoSchema);
