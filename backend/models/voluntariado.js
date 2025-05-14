@@ -29,4 +29,5 @@ const voluntariadoSchema = new Schema({
   timestamps: true
 });
 
-export const Voluntariado = model('Voluntariado', voluntariadoSchema);
+const Voluntariado = model('Voluntariado', voluntariadoSchema);
+export default Voluntariado;

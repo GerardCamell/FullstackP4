@@ -42,4 +42,5 @@ usuarioSchema.methods.comparePassword = function(candidate) {
   return bcrypt.compare(candidate, this.password);
 };
 
-export const Usuario = model('Usuario', usuarioSchema);
+const Usuario = model('Usuario', usuarioSchema);
+export default Usuario;
