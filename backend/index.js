@@ -20,12 +20,19 @@ async function startServer() {
 
   const app = express();
 
-  // Middlewares
-  app.use(express.json());
-  app.use(cors({
-    origin: 'http://localhost:3000',
-    credentials: true
-  }));
+ app.use(cors({
+  origin: function(origin, callback) {
+    const allowedOrigins = ['http://localhost:3000', 'http://127.0.0.1:5500'];
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
+
+
   app.use(session({
     secret:           process.env.SESSION_SECRET,
     resave:           false,
@@ -34,23 +41,29 @@ async function startServer() {
     cookie:           { secure: false, httpOnly: true }
   }));
 
-  // Configuración de GraphQL
-   app.use('/graphql', graphqlHTTP((req) => ({
-    schema: schema,
-    rootValue: root,
-    graphiql: process.env.NODE_ENV === 'development',
-    context: { 
-      req, 
-      user: req.session.user // Acceso al usuario en los resolvers
-    }
-  })));
-  // Ruta de comprobación
+app.use('/graphql', graphqlHTTP((req) => ({
+  schema: schema,
+  rootValue: root,
+  graphiql: true, 
+  context: { 
+    req, 
+    user: req.session.user 
+  }
+})));
+
   app.get('/health', (_req, res) => {
     res.json({ status: 'ok' });
   });
   app.use('/auth', authRouter);
   app.use('/usuarios', requireAuth, usuariosRouter);
   app.use('/voluntariados', voluntariadosRouter);
+
+  app.get('/', (req, res) => {
+  res.json({ 
+    message: 'API de Fullstack P4', 
+    endpoints: ['/health', '/auth', '/usuarios', '/voluntariados', '/graphql'] 
+  });
+});
 
   const PORT = process.env.PORT || 4000;
   app.listen(PORT, () => {

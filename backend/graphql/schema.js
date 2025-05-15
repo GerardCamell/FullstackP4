@@ -29,3 +29,4 @@ const schema = buildSchema(`
 `);
 
 export default schema;
+
