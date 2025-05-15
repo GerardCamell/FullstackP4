@@ -1,17 +1,17 @@
 import { Usuario } from '../models/usuario.js';
+import authRouter from './routes/auth.js';
+app.use('/api/auth', authRouter);
 
 // Registro de usuario
 export async function registrarUsuario(req, res) {
   try {
     const { name, email, password, role } = req.body;
 
-    // 1) Verificar si ya existe el email
     const existente = await Usuario.findOne({ email });
     if (existente) {
       return res.status(400).json({ error: 'El email ya está registrado' });
     }
 
-    // 2) Crear la instancia; el hook pre('save') del modelo hará el hash
     const nuevo = new Usuario({ name, email, password, role });
     await nuevo.save();
 
@@ -20,6 +20,7 @@ export async function registrarUsuario(req, res) {
     res.status(500).json({ error: error.message });
   }
 }
+
 
 // Login de usuario
 
@@ -53,18 +54,17 @@ export async function loginUsuario(req, res) {
 }
 
 // Logout
-export function logoutUsuario(req, res) {
-  req.session.destroy(err => {
-    if (err) {
-      return res.status(500).json({ error: 'Error al cerrar sesión' });
-    }
-    res.clearCookie('connect.sid').json({ message: 'Logout exitoso' });
-  });
+export function logoutUsuario(_req, res) {
+  res.json({ message: 'Logout exitoso — borra el token en el cliente' });
 }
 
 //Listar todos (solo admin)
 export async function listarUsuarios(req, res) {
   try {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'No autorizado' });
+    }
+
     const lista = await Usuario.find({}, '-password');
     res.json(lista);
   } catch (error) {
@@ -76,10 +76,8 @@ export async function listarUsuarios(req, res) {
 export async function obtenerUsuario(req, res) {
   try {
     const { id } = req.params;
-    const sess = req.session.user;
 
-    // Si no es admin y no coincide con su propio ID → 403
-    if (sess.role !== 'admin' && sess.id !== id) {
+    if (req.user.role !== 'admin' && req.user.id !== id) {
       return res.status(403).json({ error: 'No autorizado' });
     }
 
@@ -87,29 +85,27 @@ export async function obtenerUsuario(req, res) {
     if (!user) {
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
+
     res.json(user);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 }
 
+
 //Actualizar (admin o propio usuario)
 export async function actualizarUsuario(req, res) {
   try {
     const { id } = req.params;
-    const sess = req.session.user;
 
-    // Permite solo admin o el mismo usuario
-    if (sess.role !== 'admin' && sess.id !== id) {
+    if (req.user.role !== 'admin' && req.user.id !== id) {
       return res.status(403).json({ error: 'No autorizado' });
     }
 
-    // Evita que usuarios normales cambien su role
-    if (req.body.role && sess.role !== 'admin') {
+    if (req.body.role && req.user.role !== 'admin') {
       delete req.body.role;
     }
 
-    // Evita que password se reescriba aquí (o gestiona aparte)
     if (req.body.password) {
       delete req.body.password;
     }
@@ -134,12 +130,13 @@ export async function actualizarUsuario(req, res) {
   }
 }
 
+
 // Eliminar (solo admin)
 export async function eliminarUsuario(req, res) {
   try {
     const { id } = req.params;
 
-    if (req.session.user.role !== 'admin') {
+    if (req.user.role !== 'admin') {
       return res.status(403).json({ error: 'No autorizado' });
     }
 
