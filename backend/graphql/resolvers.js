@@ -1,7 +1,7 @@
 import { PubSub } from 'graphql-subscriptions';
-import { Usuario } from '../models/usuario.js';
-import { Voluntariado } from '../models/voluntariado.js';
-import { Estado } from '../models/estado.js';
+import Usuario from '../models/usuario.js';
+import Voluntariado from '../models/voluntariado.js';
+import Estado from '../models/estado.js';
 
 const pubsub = new PubSub();
 
