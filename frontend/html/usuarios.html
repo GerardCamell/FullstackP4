@@ -8,27 +8,22 @@
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body class="bg-custom"> 
-    <nav class="navbar navbar-expand-md bg-success" id="barraSuperior">
-        <div class="container">
-            <img class="firstPicture" src="../navbar/img/logo.svg">
-            <a class="navbar-brand text-white" id="linkNombreLogo" href="index.html">FULLSCAT</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-between" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-link text-white ms-2" id="linkServicios" href="servicios.html">SERVICIOS/PETICIONES</a>
-                    <a class="nav-link text-white mx-2" id="linkVoluntariados" href="voluntarios.html">VOLUNTARIADOS</a>
-                    <a class="nav-link text-white mx-2" id="linkUsuarios" href="usuarios.html">USUARIOS</a>
-                </div>
-                
-                <div class="navbar-nav">
-                    <a class="nav-link text-white mx-2" id="usuarioActivo" href="login.html">-NO LOGIN-</a>
-                </div>
-                
-            </div>
-        </div>
-    </nav>
+    <div id="nav-placeholder"></div>
+
+    <script>
+    window.addEventListener('DOMContentLoaded', async () => {
+    
+    const resp = await fetch('./navbar.html');
+    const navHtml = await resp.text();
+    document.getElementById('nav-placeholder').innerHTML = navHtml;
+
+    
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.src = '../js/navbar.js';
+    document.body.appendChild(script);
+    });
+    </script>
      <!---PESTAÑA USUARIOS -->
     <section class="usuariosTab pt-5 pb-5" id="usuariosTab">
         <div class="container mt-5 mb-4 rounded shadow pb-5" id="containerUsuarios">

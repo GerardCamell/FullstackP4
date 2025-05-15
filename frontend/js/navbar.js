@@ -1,12 +1,31 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const enlace = document.getElementById('usuarioActivo');
+  const navAuth = document.getElementById('navAuth');
+  navAuth.innerHTML = '';  
+
   const stored = sessionStorage.getItem('usuarioActivo');
   if (stored) {
+    
     const user = JSON.parse(stored);
-    enlace.textContent = user.name;
-    enlace.href = 'perfilusuario.html';
+    navAuth.innerHTML = `
+      <a class="nav-link text-white mx-2" href="perfilusuario.html">
+        ${user.name}
+      </a>
+      <a class="nav-link text-white mx-2" id="btnLogout" href="#">Cerrar Sesión</a>
+    `;
+    document.getElementById('btnLogout').addEventListener('click', () => {
+      
+      import('./almacenaje.js').then(({ logout }) => {
+        logout().catch(()=>{}).finally(() => {
+          sessionStorage.removeItem('usuarioActivo');
+          window.location.href = 'login.html';
+        });
+      });
+    });
   } else {
-    enlace.textContent = '-NO LOGIN-';
-    enlace.href = 'login.html';
+    
+    navAuth.innerHTML = `
+      <a class="nav-link text-white mx-2" href="login.html">Iniciar Sesión</a>
+      <a class="nav-link text-white mx-2" href="registro.html">Registrarse</a>
+    `;
   }
 });

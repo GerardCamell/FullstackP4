@@ -9,26 +9,22 @@
 </head>
 <body class="bg-custom">
 
-    <!-- Barra de navegación -->
-   <nav class="navbar navbar-expand-md bg-success" id="barraSuperior">
-    <div class="container">
-        <img class="firstPicture" src="../navbar/img/logo.svg">
-        <a class="navbar-brand text-white" id="linkNombreLogo" href="index.html">FULLSCAT</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-between" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-link text-white ms-2" id="linkServicios" href="servicios.html">SERVICIOS/PETICIONES</a>
-                <a class="nav-link text-white mx-2" id="linkVoluntariados" href="voluntarios.html">VOLUNTARIADOS</a>
-                <a class="nav-link text-white mx-2" id="linkUsuarios" href="usuarios.html">USUARIOS</a>
-            </div>
-            <div class="navbar-nav">
-                <a class="nav-link text-white mx-2" id="usuarioActivo" href="login.html">-NO LOGIN-</a>
-            </div>
-        </div>
-    </div>
-    </nav>
+    <div id="nav-placeholder"></div>
+
+    <script>
+    window.addEventListener('DOMContentLoaded', async () => {
+    
+    const resp = await fetch('./navbar.html');
+    const navHtml = await resp.text();
+    document.getElementById('nav-placeholder').innerHTML = navHtml;
+
+    
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.src = '../js/navbar.js';
+    document.body.appendChild(script);
+    });
+    </script>
 
     <!--- WELCOME page -->
     <div class="pestañas expand-ms" id="contenido">
@@ -75,6 +71,6 @@
 
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>  
       <script src="../js/main.js"></script>
-      <script src="../js/navbar.js"></script>
+      
 </body>
 </html>

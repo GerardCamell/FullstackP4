@@ -1,17 +1,21 @@
 import { registrarUsuario } from './almacenaje.js';
 
-const form = document.querySelector('#form-registro');
-form.addEventListener('submit', async e => {
-  e.preventDefault();
-  const name = form.nombre.value;
-  const email = form.email.value;
-  const password = form.password.value;
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('formRegistro');
 
-  try {
-    await registrarUsuario({ name, email, password, role: 'user' });
-    alert('Usuario registrado ✅. Ahora haz login.');
-    window.location.href = 'login.html';
-  } catch (err) {
-    alert('Error al registrar: ' + err.message);
-  }
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const name     = form.name.value.trim();
+    const email    = form.email.value.trim();
+    const password = form.password.value.trim();
+
+    try {
+      // Llamada GraphQL al backend
+      await registrarUsuario({ name, email, password, role: 'user' });
+      alert('Usuario registrado exitosamente. Ya puedes iniciar sesión.');
+      window.location.href = 'login.html';
+    } catch (err) {
+      alert('Error al registrar:\n' + err.message);
+    }
+  });
 });
