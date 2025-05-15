@@ -1,25 +1,19 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const usuarioGuardado = localStorage.getItem("usuarioActivo");
-    if (!usuarioGuardado) {
-        alert("Debes iniciar sesión");
-        window.location.href = "login.html";
-        return;
-    }
+import { logout } from './almacenaje.js';
 
+document.addEventListener('DOMContentLoaded', () => {
+  const stored = sessionStorage.getItem('usuarioActivo');
+  if (!stored) return window.location.href = 'login.html';
+  const user = JSON.parse(stored);
+
+  document.getElementById('nombreUser').textContent = user.name;
+  document.getElementById('emailUser').textContent = user.email;
+
+  
+  window.cerrarSesion = async () => {
     try {
-        const usuarioLogueado = JSON.parse(usuarioGuardado);
-        document.getElementById("nombreUser").textContent = usuarioLogueado.name;
-        document.getElementById("emailUser").textContent = usuarioLogueado.email;
-        document.getElementById("usuarioActivo").textContent = usuarioLogueado.name.toUpperCase();
-    } catch (error) {
-        console.error("Error al parsear el usuario activo:", error);
-        alert("Error al cargar usuario, inicia sesión de nuevo.");
-        localStorage.removeItem("usuarioActivo");
-        window.location.href = "login.html";
-    }
+      await logout();
+    } catch (e) {  }
+    sessionStorage.removeItem('usuarioActivo');
+    window.location.href = 'login.html';
+  };
 });
-
-function cerrarSesion() {
-    localStorage.removeItem("usuarioActivo");
-    window.location.href = "../html/login.html"; 
-}

@@ -25,10 +25,15 @@ async function startServer() {
   const app = express();
 
   // 2. Middlewares globales
-  app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-    credentials: true
-  }));
+  const allowedOrigins = [
+  process.env.FRONTEND_URL || 'http://localhost:3000',
+  'http://127.0.0.1:64537'    
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
   app.use(session({
     secret:            process.env.SESSION_SECRET,
     resave:            false,
