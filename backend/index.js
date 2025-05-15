@@ -25,13 +25,13 @@ async function startServer() {
   const app = express();
 
   // 2. Middlewares globales
-  const allowedOrigins = [
+  /* const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://localhost:3000',
-  'http://127.0.0.1:64537'    
-];
+  'http://127.0.0.1:64537'          
+]; */
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: (_, callback) => callback(null, true),
   credentials: true
 }));
   app.use(session({

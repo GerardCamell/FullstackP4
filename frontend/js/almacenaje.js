@@ -136,3 +136,15 @@ export async function eliminarVoluntariado(id) {
   const { eliminarVoluntariado } = await graphQLRequest(mutation, variables);
   return eliminarVoluntariado; 
 }
+
+export async function eliminarUsuario(id) {
+  const mutation = `
+    mutation EliminarUsuario($id: ID!) {
+      eliminarUsuario(id: $id)
+    }
+  `;
+  const variables = { id };
+  // Desestructuramos el booleano (o lo que retorne tu API)
+  const { eliminarUsuario } = await graphQLRequest(mutation, variables);
+  return eliminarUsuario;
+}

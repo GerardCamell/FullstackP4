@@ -20,9 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
       
       sessionStorage.setItem('usuarioActivo', JSON.stringify(user));
       
-      const enlace = document.getElementById('usuarioActivo');
-      enlace.textContent = user.name;
-      
       window.location.href = 'perfilusuario.html';
     } catch (err) {
       alert('Error al iniciar sesión:\n' + err.message);

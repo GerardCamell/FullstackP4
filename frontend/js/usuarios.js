@@ -1,90 +1,97 @@
-/* ----PESTAÑA USUARIOS--- */
+import {
+  obtenerUsuarios,
+  registrarUsuario,
+  eliminarUsuario as eliminarUsuarioAPI
+} from './almacenaje.js';
 
-//Llamamos a la funcion para ver los mostrar en la tabla los usuarios registrados
+const form = document.getElementById('formAltaUsuarios');
+const tablaBody = document.getElementById('tablaUsuarios');
 
-actualizarTabla();
-
-
-document.getElementById('formAltaUsuarios').addEventListener('submit', function (event) {
-    event.preventDefault();  
-
-    //Declaramos las constantes donde se guardaran los valores que se indiquen en el formulario
-    
-    const nombreAltaUsuario = document.getElementById('nombre').value.trim();
-    const emailAltaUsuario = document.getElementById('correo').value.trim();
-    const passwordAltaUsuario = document.getElementById('contraseña').value.trim();
-
-    //Mostramos un mensaje de error en caso que no se llenen las casillas
-    //Mensaje de ecito si se llenan todas
-
-    if (!nombreAltaUsuario || !emailAltaUsuario || !passwordAltaUsuario) {
-        alert("Todos los campos son obligatorios");
-        return;  
-    } else {
-        alert("¡Usuario registrado!")
-    }
-
-    //Almacenamos los datos
-
-    const nuevoUsuarioRegistrado = {
-        name: nombreAltaUsuario,
-        email: emailAltaUsuario,
-        password: passwordAltaUsuario
-    };
-
-    //Almacenamos el nuevo usuario en la array
-    
-    usuario.push(nuevoUsuarioRegistrado);
-
-    document.getElementById('formAltaUsuarios').reset();
-
-    
-
- // Llamamos a la función para actualizar la tabla
- actualizarTabla();
+window.addEventListener('DOMContentLoaded', () => {
+  // Comprobar sesión y rol
+  const sessionUser = sessionStorage.getItem('usuarioActivo');
+  if (!sessionUser) {
+    window.location.href = 'login.html';
+    return;
+  }
+  const { role } = JSON.parse(sessionUser);
+  if (role !== 'admin') {
+    alert('Acceso denegado: necesita ser administrador');
+    window.location.href = 'login.html';
+    return;
+  }
+  cargarYMostrarUsuarios();
 });
 
-/*--MOSTRAR EN LA TABLA--*/
-// Función para actualizar la tabla
-function actualizarTabla() {
-    const tablaUsuarios = document.getElementById('tablaUsuarios'); // Accedemos al tbody de la tabla
-
-    // Limpiamos el contenido actual de la tabla
-    tablaUsuarios.innerHTML = '';
-
-    // Iteramos sobre los usuarios registrados y los añadimos a la tabla
-    usuario.forEach((usuario, index) => {
-        const nuevaFila = document.createElement('tr'); 
-
-        // Añadimos celdas con la información del usuario
-        const celdaNombre = document.createElement('td');
-        celdaNombre.textContent = usuario.name; 
-        nuevaFila.appendChild(celdaNombre);
-
-        const celdaEmail = document.createElement('td');
-        celdaEmail.textContent = usuario.email; 
-        nuevaFila.appendChild(celdaEmail);
-
-        const celdaPassword = document.createElement('td');
-        celdaPassword.textContent = usuario.password; 
-        nuevaFila.appendChild(celdaPassword);
-
-        // Crear celda de acciones con un botón de eliminar
-        const celdaAcciones = document.createElement('td');
-        celdaAcciones.innerHTML = `<button class="btn btn-danger btn-sm" onclick="eliminarUsuario(${index})">Eliminar</button>`;
-        nuevaFila.appendChild(celdaAcciones);
-
-        // Añadimos la fila a la tabla
-        tablaUsuarios.appendChild(nuevaFila);
-    });
+// Función que obtiene y muestra usuarios
+async function cargarYMostrarUsuarios() {
+  try {
+    const usuarios = await obtenerUsuarios();
+    renderTabla(usuarios);
+  } catch (err) {
+    if (err.message.includes('No autenticado')) {
+      window.location.href = 'login.html';
+    } else {
+      console.error(err);
+      alert('Error al cargar usuarios');
+    }
+  }
 }
 
-// Función para eliminar un usuario
-function eliminarUsuario(index) {
-    // Eliminar el usuario de la array
-    usuario.splice(index, 1);
-
-    // Actualizamos la tabla después de eliminar el usuario
-    actualizarTabla();
+// Renderizar la tabla con los datos remotos
+function renderTabla(usuarios) {
+  tablaBody.innerHTML = '';
+  usuarios.forEach(u => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${u.name}</td>
+      <td>${u.email}</td>
+      <td>${u.role}</td>
+      <td>
+        <button class="btn btn-danger btn-sm">Eliminar</button>
+      </td>
+    `;
+    tr.querySelector('button').addEventListener('click', () => borrar(u.id));
+    tablaBody.appendChild(tr);
+  });
 }
 
+// Alta de usuario
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  const name = document.getElementById('nombre').value.trim();
+  const email = document.getElementById('correo').value.trim();
+  const password = document.getElementById('contraseña').value.trim();
+  if (!name || !email || !password) {
+    return alert('Todos los campos son obligatorios');
+  }
+  try {
+    await registrarUsuario({ name, email, password });
+    alert('¡Usuario registrado!');
+    form.reset();
+    cargarYMostrarUsuarios();
+  } catch (err) {
+    console.error(err);
+    if (err.message.includes('No autenticado')) {
+      window.location.href = 'login.html';
+    } else {
+      alert('Error al registrar usuario');
+    }
+  }
+});
+
+// Borrado de usuario
+async function borrar(id) {
+  if (!confirm('¿Seguro que quieres eliminar este usuario?')) return;
+  try {
+    await eliminarUsuarioAPI(id);
+    cargarYMostrarUsuarios();
+  } catch (err) {
+    console.error(err);
+    if (err.message.includes('No autenticado')) {
+      window.location.href = 'login.html';
+    } else {
+      alert('Error al eliminar usuario');
+    }
+  }
+}

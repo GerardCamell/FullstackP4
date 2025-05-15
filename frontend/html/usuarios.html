@@ -1,80 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Usuarios</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usuarios</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 <body class="bg-custom"> 
-    <div id="nav-placeholder"></div>
+  <div id="nav-placeholder"></div>
 
-    <script>
+  <script>
     window.addEventListener('DOMContentLoaded', async () => {
-    
-    const resp = await fetch('./navbar.html');
-    const navHtml = await resp.text();
-    document.getElementById('nav-placeholder').innerHTML = navHtml;
+      const resp = await fetch('./navbar.html');
+      const navHtml = await resp.text();
+      document.getElementById('nav-placeholder').innerHTML = navHtml;
 
-    
-    const script = document.createElement('script');
-    script.type = 'module';
-    script.src = '../js/navbar.js';
-    document.body.appendChild(script);
+      const script = document.createElement('script');
+      script.type = 'module';
+      script.src = '../js/navbar.js';
+      document.body.appendChild(script);
     });
-    </script>
-     <!---PESTAÑA USUARIOS -->
-    <section class="usuariosTab pt-5 pb-5" id="usuariosTab">
-        <div class="container mt-5 mb-4 rounded shadow pb-5" id="containerUsuarios">
-          
-          <div class="container px-4 text-center">
-              <div class="row gx-5">
-                  <h1 class="headerUsuarios pt-4 pt-2">Gestión de usuarios</h1>
-                <div class="col">
-                 <div class="p-3 fw-bold">Alta de usuario
-                  <form id="formAltaUsuarios">
-                      <div class="mb-3 text-start w-100">
-                          <label for="nombre" class="form-label-nombre">Nombre:</label>
-                          <input type="text" class="form-control w-50" id="nombre" placeholder="Indique su nombre">
-                      </div>
-                      <div class="mb-3 text-start w-100">
-                          <label for="email" class="form-label-email">E-mail:</label>
-                          <input type="email" class="form-control w-50" id="correo" placeholder="Indique su e-mail">
-                      </div>
-                      <div class="mb-3 text-start w-100">
-                          <label for="password" class="form-label-password">Password:</label>
-                          <input type="password" class="form-control w-50" id="contraseña" placeholder="Indique su contraseña">
-                      </div>
+  </script>
 
-                      <button type="submit" class="btn btn-success btn-lg w-50 colorRegistrar">Registrar</button>
-                  </form>
-                 </div>
+  <!---PESTAÑA USUARIOS -->
+  <section class="usuariosTab pt-5 pb-5" id="usuariosTab">
+    <div class="container mt-5 mb-4 rounded shadow pb-5" id="containerUsuarios">
+      <div class="container px-4 text-center">
+        <div class="row gx-5">
+          <h1 class="headerUsuarios pt-4 pt-2">Gestión de usuarios</h1>
+          <div class="col">
+            <div class="p-3 fw-bold">Alta de usuario
+              <form id="formAltaUsuarios">
+                <div class="mb-3 text-start w-100">
+                  <label for="nombre" class="form-label-nombre">Nombre:</label>
+                  <input
+                    type="text"
+                    id="nombre"
+                    name="nombre"
+                    class="form-control w-50"
+                    placeholder="Indique su nombre"
+                  >
                 </div>
-                <div class="col ">
-                  <div class="p-3 fw-bold">Consulta y borrado de usuarios
-                      <div class="container text-center">
-                              <table class="table">
-                                  <thead>
-                                    <tr>
-                                      <th scope="col" id="tituloDatos">Nombre</th>
-                                      <th scope="col"id="tituloDatos">Email</th>
-                                      <th scope="col"id="tituloDatos">Password</th>
-                                      <th scope="col"id="tituloDatos">Acciones</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody id="tablaUsuarios">
-                                  </tbody>                                    
-                                </table>
-                        </div>
-                  </div>
+                <div class="mb-3 text-start w-100">
+                  <label for="correo" class="form-label-email">E-mail:</label>
+                  <input
+                    type="email"
+                    id="correo"
+                    name="correo"
+                    class="form-control w-50"
+                    placeholder="Indique su e-mail"
+                  >
                 </div>
+                <div class="mb-3 text-start w-100">
+                  <label for="contraseña" class="form-label-password">Password:</label>
+                  <input
+                    type="password"
+                    id="contraseña"
+                    name="contraseña"
+                    class="form-control w-50"
+                    placeholder="Indique su contraseña"
+                  >
+                </div>
+                <button type="submit" class="btn btn-success btn-lg w-50 colorRegistrar">
+                  Registrar
+                </button>
+              </form>
+            </div>
+          </div>
+          <div class="col">
+            <div class="p-3 fw-bold">Consulta y borrado de usuarios
+              <div class="container text-center">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col" id="tituloDatos">Nombre</th>
+                      <th scope="col" id="tituloDatos">Email</th>
+                      <th scope="col" id="tituloDatos">Rol</th>
+                      <th scope="col" id="tituloDatos">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tablaUsuarios">
+                  </tbody>                                    
+                </table>
               </div>
-            </div>  
-        </div> 
-    </section>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>  
-    <script type="module"  src="../js/int_4_usuarios.js"></script>
-    <script type="module" src="../js/navbar.js"></script>
-    </body>
+            </div>
+          </div>
+        </div>
+      </div>  
+    </div> 
+  </section>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"
+  ></script>  
+  <script type="module" src="../js/usuarios.js"></script>
+</body>
 </html>
