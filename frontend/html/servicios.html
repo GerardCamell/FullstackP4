@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicios</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="bg-custom">
+
+    <nav class="navbar navbar-expand-md bg-success" id="barraSuperior">
+        <div class="container">
+            <img class="firstPicture" src="../navbar/img/logo.svg">
+            <a class="navbar-brand text-white" id="linkNombreLogo" href="index.html">FULLSCAT</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link text-white ms-2" id="linkServicios" href="servicios.html">SERVICIOS/PETICIONES</a>
+                    <a class="nav-link text-white mx-2" id="linkVoluntariados" href="voluntarios.html">VOLUNTARIADOS</a>
+                    <a class="nav-link text-white mx-2" id="linkUsuarios" href="usuarios.html">USUARIOS</a>
+                </div>
+                <div class="navbar-nav">
+                     <a class="nav-link text-white mx-2" id="usuarioActivo" href="login.html">-NO LOGIN-</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!--- SERVICE -->
+
+    <section class="serviciosTab pt-5 pb-5" id="serviciosTab">
+        <div class="container mt-5 mb-4 rounded shadow pb-5" id="containerServicios">
+            <h1 class="headerServicios pt-4 pt-2">Servicios y Peticiones</h1>
+        
+            <!-- Botones de filtro -->
+            <div class="filtro-botones">
+                <button onclick="filtrar()">Mostrar Todo</button>
+                <button onclick="filtrar('Oferta de voluntariado')">Oferta de Voluntariado</button>
+                <button onclick="filtrar('Petición de voluntariado')">Petición de Voluntariado</button>
+                <button onclick="filtrarMisServicios()">Mis Servicios</button>
+                <button onclick="filtrarServiciosDeOtros()">Servicios de Otros</button>
+            </div>
+        
+            <!-- Contenedor de las tarjetas -->
+            <div class="tarjeta-contenedor" id="contenedorServicios"></div>
+
+        </div>
+ 
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>  
+    <script src="../js/datos.js"></script>
+    <script src="../js/servicios.js"></script>
+    <script src="../js/navbar.js"></script>
+</body>
+</html>
