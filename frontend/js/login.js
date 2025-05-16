@@ -1,28 +1,24 @@
 import { login } from './almacenaje.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('formLogin');
-  const btnRegistro = document.getElementById('signOn');
+const form = document.getElementById('formLogin');
 
-  
-  btnRegistro.addEventListener('click', () => {
-    window.location.href = 'registro.html';
-  });
+form.addEventListener('submit', async e => {
+  e.preventDefault();
 
-  form.addEventListener('submit', async e => {
-    e.preventDefault();
-    const email = form.email.value.trim();
-    const password = form.password.value.trim();
+  const email    = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value.trim();
 
-    try {
-      
-      const user = await login(email, password);
-      
-      sessionStorage.setItem('usuarioActivo', JSON.stringify(user));
-      
-      window.location.href = 'perfilusuario.html';
-    } catch (err) {
-      alert('Error al iniciar sesión:\n' + err.message);
-    }
-  });
+  try {
+    // 1) Llamas a tu mutación de login
+    const user = await login(email, password);
+
+    // 2) Guardas el objeto usuario en sessionStorage
+    sessionStorage.setItem('usuarioActivo', JSON.stringify(user));
+
+    // 3) Rediriges a la página protegida
+    window.location.href = 'usuarios.html';
+  } catch (err) {
+    console.error('Login fallido:', err);
+    alert('Credenciales inválidas o no autenticado');
+  }
 });

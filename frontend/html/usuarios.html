@@ -23,7 +23,7 @@
     });
   </script>
 
-  <!---PESTAÑA USUARIOS -->
+  <!--- PESTAÑA USUARIOS -->
   <section class="usuariosTab pt-5 pb-5" id="usuariosTab">
     <div class="container mt-5 mb-4 rounded shadow pb-5" id="containerUsuarios">
       <div class="container px-4 text-center">
@@ -42,6 +42,7 @@
                     placeholder="Indique su nombre"
                   >
                 </div>
+
                 <div class="mb-3 text-start w-100">
                   <label for="correo" class="form-label-email">E-mail:</label>
                   <input
@@ -52,6 +53,7 @@
                     placeholder="Indique su e-mail"
                   >
                 </div>
+
                 <div class="mb-3 text-start w-100">
                   <label for="contraseña" class="form-label-password">Password:</label>
                   <input
@@ -62,12 +64,23 @@
                     placeholder="Indique su contraseña"
                   >
                 </div>
+
+                <!-- Selector de rol, inicialmente oculto -->
+                <div id="role-container" class="mb-3 text-start w-50" style="display: none;">
+                  <label for="role" class="form-label">Rol:</label>
+                  <select id="role" name="role" class="form-select">
+                    <option value="user">Usuario</option>
+                    <option value="admin">Administrador</option>
+                  </select>
+                </div>
+
                 <button type="submit" class="btn btn-success btn-lg w-50 colorRegistrar">
                   Registrar
                 </button>
               </form>
             </div>
           </div>
+
           <div class="col">
             <div class="p-3 fw-bold">Consulta y borrado de usuarios
               <div class="container text-center">
@@ -86,6 +99,7 @@
               </div>
             </div>
           </div>
+
         </div>
       </div>  
     </div> 
