@@ -101,33 +101,39 @@ async function handleEliminar(e) {
 }
 
 function actualizarGrafico(lista) {
-  // Asume un <canvas id="graficoVoluntarios"></canvas> en el HTML y Chart.js cargado
-  const ctx = document.getElementById('graficoVoluntarios').getContext('2d');
-  const tipos = [...new Set(lista.map(v => v.tipo))];
-  const counts = tipos.map(tipo => lista.filter(v => v.tipo === tipo).length);
-
-  if (window.graficoVoluntarios) {
-    // Actualizo datos existentes
-    window.graficoVoluntarios.data.labels = tipos;
-    window.graficoVoluntarios.data.datasets[0].data = counts;
-    window.graficoVoluntarios.update();
-  } else {
-    // Creo nuevo gráfico
-    window.graficoVoluntarios = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: tipos,
-        datasets: [{
-          label: 'Voluntariados por tipo',
-          data: counts
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: { beginAtZero: true }
-        }
-      }
-    });
+  const canvas = document.getElementById('graficoVoluntarios');
+  if (!canvas) {
+    console.warn('No se encontró el canvas #graficoVoluntarios');
+    return;
   }
+  const ctx = canvas.getContext('2d');
+
+  const tipos  = [...new Set(lista.map(v => v.tipo))];
+  const counts = tipos.map(t => lista.filter(v => v.tipo === t).length);
+
+  // Solo destruyo si ya hay un chart válido con método destroy
+  if (
+    window.graficoVoluntarios &&
+    typeof window.graficoVoluntarios.destroy === 'function'
+  ) {
+    window.graficoVoluntarios.destroy();
+  }
+
+  // Creo uno nuevo y lo guardo
+  window.graficoVoluntarios = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: tipos,
+      datasets: [{
+        label: 'Voluntariados por tipo',
+        data: counts
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
 }
