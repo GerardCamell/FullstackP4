@@ -1,6 +1,7 @@
+// backend/controllers/voluntariadoController.js
 import Voluntariado from '../models/voluntariado.js';
 
-// Crear nuevo voluntariado
+// Crear nuevo voluntariado\
 export async function crearVoluntariado(req, res) {
   try {
     const { titulo, descripcion, fecha, tipo } = req.body;
@@ -12,6 +13,12 @@ export async function crearVoluntariado(req, res) {
       tipo,
       creadoPor: userId
     });
+    
+    // Emitir evento de creación en tiempo real
+    if (req.io) {
+      req.io.emit('voluntariadoCreado', nuevo);
+    }
+
     res.status(201).json(nuevo);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -60,6 +67,12 @@ export async function actualizarVoluntariado(req, res) {
       runValidators: true
     }).populate('creadoPor', 'name email role');
     if (!vol) return res.status(404).json({ error: 'No autorizado o no encontrado' });
+
+    // Emitir evento de actualización en tiempo real (opcional)
+    if (req.io) {
+      req.io.emit('voluntariadoActualizado', vol);
+    }
+
     res.json(vol);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -75,6 +88,12 @@ export async function eliminarVoluntariado(req, res) {
     if (role !== 'admin') query.creadoPor = userId;
     const vol = await Voluntariado.findOneAndDelete(query);
     if (!vol) return res.status(404).json({ error: 'No autorizado o no encontrado' });
+
+    // Emitir evento de eliminación en tiempo real
+    if (req.io) {
+      req.io.emit('voluntariadoEliminado', id);
+    }
+
     res.json({ message: 'Eliminado con éxito' });
   } catch (err) {
     res.status(500).json({ error: err.message });
