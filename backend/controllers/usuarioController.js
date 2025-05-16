@@ -1,6 +1,6 @@
-import { Usuario } from '../models/usuario.js';
 import authRouter from './routes/auth.js';
 app.use('/api/auth', authRouter);
+import Usuario from '../models/usuario.js';
 
 // Registro de usuario
 export async function registrarUsuario(req, res) {
