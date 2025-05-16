@@ -17,6 +17,9 @@ import { makeExecutableSchema } from '@graphql-tools/schema';
 import { typeDefs } from './graphql/schema.js';
 import { resolvers } from './graphql/resolvers.js';
 import { Server as SocketIOServer } from 'socket.io';
+import authRouter from './routes/auth.js';
+import usuariosRouter from './routes/usuarios.js';
+import voluntariadosRouter from './routes/voluntariado.js';
 
 // Configuración inicial
 dotenv.config();
@@ -27,6 +30,9 @@ const httpsOptions = {
   key: fs.readFileSync('clave-privada.key'),
   cert: fs.readFileSync('certificado.crt')
 };
+const schema = makeExecutableSchema({ typeDefs, resolvers });
+const httpsServer = createHTTPSServer(httpsOptions, app);
+const wsServer = new WebSocketServer({ server: httpsServer, path: '/graphql' });
 
 // 2. Conectar a MongoDB
 await connectDB();
@@ -51,10 +57,7 @@ app.use(session({
 
 app.use(express.json());
 
-// 4. Configuración de WebSockets
-const schema = makeExecutableSchema({ typeDefs, resolvers });
-const httpsServer = createHTTPSServer(httpsOptions, app);
-const wsServer = new WebSocketServer({ server: httpsServer, path: '/graphql' });
+
 useServer({ schema }, wsServer);
 
 // 5. Configuración Apollo Server
@@ -80,7 +83,6 @@ app.use('/graphql',
   })
 );
 
-// 7. Configuración Socket.io
 const io = new SocketIOServer(httpsServer, {
   cors: {
     origin: process.env.FRONTEND_URL || 'https://localhost:3000',
@@ -101,16 +103,13 @@ io.on('connection', (socket) => {
 });
 
 // 8. Rutas REST
-import authRouter from './routes/auth.js';
-import usuariosRouter from './routes/usuarios.js';
-import voluntariadosRouter from './routes/voluntariado.js';
+
 
 app.get('/health', (_req, res) => res.json({ status: 'ok' }));
 app.use('/auth', authRouter);
 app.use('/usuarios', usuariosRouter);
 app.use('/voluntariados', voluntariadosRouter);
 
-// 9. Redirección HTTP -> HTTPS
 const httpApp = express();
 httpApp.use((req, res) => {
   res.redirect(`https://${req.headers.host}${req.url}`);
