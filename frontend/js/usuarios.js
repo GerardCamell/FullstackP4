@@ -76,10 +76,11 @@ form.addEventListener('submit', async e => {
   const email = document.getElementById('correo').value.trim();
   const pass  = document.getElementById('contraseña').value.trim();
   // Para admins, leer el rol del selector; para otros, será 'user'
-  const roleSelect = document.getElementById('role');
-  const role       = roleSelect && roleSelect.style.display === 'block'
-                     ? roleSelect.value
-                     : 'user';
+  const roleContainer = document.getElementById('role-container');
+  const roleSelect    = document.getElementById('role');
+  const role = (roleContainer && roleContainer.style.display === 'block')
+                ? roleSelect.value
+                : 'user';
 
   if (!name || !email || !pass) {
     return alert('Todos los campos son obligatorios');
