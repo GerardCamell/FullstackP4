@@ -1,8 +1,36 @@
+
 document.addEventListener('DOMContentLoaded', () => {
   cargarVoluntarios();
   document
     .getElementById('formAltaVoluntarios')
     .addEventListener('submit', handleAltaVoluntario);
+});
+
+// Conectar a WebSocket
+const socket = io('http://localhost:4000', { withCredentials: true });
+
+socket.on('connect', () => {
+  console.log('🟢 Conectado al servidor WebSocket');
+});
+
+socket.on('connect_error', err => {
+  console.error('🔴 Error al conectar WebSocket:', err);
+});
+
+// Manejo eventos WebSockets
+socket.on('voluntariadoCreado', voluntariado => {
+  console.log('✨ Voluntariado creado:', voluntariado);
+  cargarVoluntarios();
+});
+
+socket.on('voluntariadoActualizado', voluntariado => {
+  console.log('🔄 Voluntariado actualizado:', voluntariado);
+  cargarVoluntarios();
+});
+
+socket.on('voluntariadoEliminado', ({ id }) => {
+  console.log('🗑️ Voluntariado eliminado:', id);
+  cargarVoluntarios();
 });
 
 async function cargarVoluntarios() {

@@ -85,8 +85,8 @@ async function startServer() {
       next();
     },
     expressMiddleware(apolloServer, {
-      context: async ({ req, res }) => ({ req, res })
-    })
+    context: async ({ req, res }) => ({ req, res, io: req.io })
+  })
   );
 
   // 8. Rutas REST
