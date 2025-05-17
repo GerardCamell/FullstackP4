@@ -1,6 +1,4 @@
 import { Usuario } from '../models/usuario.js';
-import authRouter from './routes/auth.js';
-app.use('/api/auth', authRouter);
 
 // Registro de usuario
 export async function registrarUsuario(req, res) {

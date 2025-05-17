@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="bg-custom">
+
+    <div id="nav-placeholder"></div>
+
+    <script>
+    window.addEventListener('DOMContentLoaded', async () => {
+    
+    const resp = await fetch('./navbar.html');
+    const navHtml = await resp.text();
+    document.getElementById('nav-placeholder').innerHTML = navHtml;
+
+    
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.src = '../js/navbar.js';
+    document.body.appendChild(script);
+    });
+    </script>
+    
+      <!--- LOG IN page -->
+      <section class="loginTab pt-5 pb-5" id="loginTab">
+        <!--FORMULARIO LOGIN -->
+       <div class="container w-75 pt-5 pb-5 mt-5 mb-5 rounded shadow" id="containerLogin"> <!-- container -->
+         <div class="row align-items-strech" id="celdaLogIn"> <!-- row -->
+            <div class="col" id="columnaLogInDerecha"> <!-- col2 -->
+             <h2 class="welcomeLogin fw-bold text-center py-1">Iniciar Sesión</h2>   
+             <!--LOGIN-->
+             <form id="formLogin" action="#">
+                <div class="mb-4 pt-2">
+                    <label for="email" class="form-label">Correo electronico</label>
+                    <input type="email" class="form-control" name="email" id="email">
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" name="password" id="password">
+                </div>
+                <div class="mb-4 form-check">
+                    <input type="checkbox" name="conected" class="form-check-input">
+                    <label for="conected" class="form-check-label">Mantener conectado</label>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Entrar</button>
+                </div>
+                <div class="d-grid mt-3">
+                    <button type="button" class="btn btn-success" id="signOn">Registrarse</button>
+                </div>
+            </form>
+             <!--LOGIN SN-->
+             <div class="container w-75 my-3" id="redesSocialesContainer">
+                <div class="row text-center">
+                    <div class="col-12 fw-bold pb-1">
+                         O prefieres desde:
+                    </div>
+                    <div class="col" id="colRedIzq">
+                        
+                        <button class="btn btn-outline-primary w-100" id="facebook">
+                            <img src="/img/facebook.svg" width="25" alt=""> 
+                        </button>
+                    </div>
+                    <div class="col" id="colRedCen">
+                        <button class="btn btn-outline-dark w-100">X</button>
+                    </div>
+                    <div class="col" id="colRedCen2">
+                        <button class="btn btn-outline-danger w-100" id="google">
+                            <img src="/img/googlelogo.svg" width="35" alt="">
+                         </button>
+                    </div>
+                </div>   
+             </div>
+             </div>
+            </div>
+         </div>
+                
+         </div>
+         
+       </div>
+      
+      </section>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>  
+      <script type="module" src="../js/login.js"></script>
+      <script type="module" src="../js/navbar.js"></script>
+
+</body>
+</html>

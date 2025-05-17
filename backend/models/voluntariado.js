@@ -1,4 +1,6 @@
-import { Schema, model, Types } from 'mongoose';
+import mongoose from 'mongoose';
+
+const { Schema, Types } = mongoose;
 
 const voluntariadoSchema = new Schema({
   titulo: {
@@ -29,4 +31,7 @@ const voluntariadoSchema = new Schema({
   timestamps: true
 });
 
-export const Voluntariado = model('Voluntariado', voluntariadoSchema);
+const Voluntariado = mongoose.models.Voluntariado
+  || mongoose.model('Voluntariado', voluntariadoSchema);
+
+export default Voluntariado;
