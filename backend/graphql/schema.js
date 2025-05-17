@@ -15,6 +15,7 @@ export const typeDefs = gql`
     fecha: String!
     tipo: String!
     creadoPor: Usuario!
+    createdAt: String!
   }
 
   type Estado {

@@ -13,43 +13,37 @@
 
     <script>
     window.addEventListener('DOMContentLoaded', async () => {
-    
-    const resp = await fetch('./navbar.html');
-    const navHtml = await resp.text();
-    document.getElementById('nav-placeholder').innerHTML = navHtml;
+        const resp = await fetch('./navbar.html');
+        const navHtml = await resp.text();
+        document.getElementById('nav-placeholder').innerHTML = navHtml;
 
-    
-    const script = document.createElement('script');
-    script.type = 'module';
-    script.src = '../js/navbar.js';
-    document.body.appendChild(script);
+        const script = document.createElement('script');
+        script.type = 'module';
+        script.src = '../js/navbar.js';
+        document.body.appendChild(script);
     });
     </script>
-    <!--- SERVICE -->
 
+    <!-- SERVICE -->
     <section class="serviciosTab pt-5 pb-5" id="serviciosTab">
         <div class="container mt-5 mb-4 rounded shadow pb-5" id="containerServicios">
             <h1 class="headerServicios pt-4 pt-2">Servicios y Peticiones</h1>
         
             <!-- Botones de filtro -->
             <div class="filtro-botones">
-                <button onclick="filtrar()">Mostrar Todo</button>
-                <button onclick="filtrar('Oferta de voluntariado')">Oferta de Voluntariado</button>
-                <button onclick="filtrar('Petición de voluntariado')">Petición de Voluntariado</button>
-                <button onclick="filtrarMisServicios()">Mis Servicios</button>
-                <button onclick="filtrarServiciosDeOtros()">Servicios de Otros</button>
+                <button id="btnMostrarTodo">Mostrar Todo</button>
+                <button id="btnOferta">Oferta de Voluntariado</button>
+                <button id="btnPeticion">Petición de Voluntariado</button>
+                <button id="btnMisServicios">Mis Servicios</button>
+                <button id="btnServiciosOtros">Servicios de Otros</button>
             </div>
         
             <!-- Contenedor de las tarjetas -->
             <div class="tarjeta-contenedor" id="contenedorServicios"></div>
-
         </div>
- 
     </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>  
-    <script src="../js/datos.js"></script>
-    <script src="../js/servicios.js"></script>
-    <script src="../js/navbar.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>  
+    <script type="module" src="../js/servicios.js"></script>
 </body>
 </html>

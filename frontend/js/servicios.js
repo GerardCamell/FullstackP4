@@ -1,11 +1,16 @@
-function mostrarServicios(filtroTipoServicio = '', filtroUsuarioServicio = '') {
+import { obtenerVoluntariados } from './almacenaje.js';
+
+let listaVoluntariados = [];
+let usuarioLogueado = null;
+
+async function mostrarServicios(filtroTipoServicio = '', filtroUsuarioServicio = '') {
     const contenedorServicio = document.getElementById('contenedorServicios');
     contenedorServicio.innerHTML = '';
 
-    const serviciosFiltrados = voluntario.filter(v =>
-        (filtroTipoServicio === '' || v.tipo === filtroTipoServicio) &&
-        (filtroUsuarioServicio === '' || v.usuario === filtroUsuarioServicio)
-    );
+    const serviciosFiltrados = listaVoluntariados.filter(v =>
+  (filtroTipoServicio === '' || v.tipo.toLowerCase().includes(filtroTipoServicio.toLowerCase())) &&
+  (filtroUsuarioServicio === '' || v.creadoPor.name === filtroUsuarioServicio)
+);
 
     serviciosFiltrados.forEach(v => {
         const tarjetaServicios = document.createElement('div');
@@ -19,8 +24,8 @@ function mostrarServicios(filtroTipoServicio = '', filtroUsuarioServicio = '') {
 
         tarjetaServicios.innerHTML = `
             <h3>${v.titulo}</h3>
-            <p><strong>Usuario:</strong> ${v.usuario}</p>
-            <p><strong>Fecha:</strong> ${v.fecha}</p>
+            <p><strong>Usuario:</strong> ${v.creadoPor.name}</p>
+            <p><strong>Fecha:</strong> ${new Date(v.createdAt).toLocaleDateString()}</p>
             <p><strong>Descripción:</strong> ${v.descripcion}</p>
             <p><strong>Tipo:</strong> ${v.tipo}</p>
         `;
@@ -30,7 +35,7 @@ function mostrarServicios(filtroTipoServicio = '', filtroUsuarioServicio = '') {
 }
 
 function filtrar(tipo = '', usuario = '') {
-    mostrarServicios(tipo, usuario);
+    mostrarServicios(tipo.toLowerCase(), usuario);
 }
 
 function filtrarMisServicios() {
@@ -58,6 +63,26 @@ function filtrarServiciosDeOtros() {
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    mostrarServicios();
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        listaVoluntariados = await obtenerVoluntariados();
+
+        const userData = sessionStorage.getItem('user');
+        if (userData) {
+            usuarioLogueado = JSON.parse(userData);
+        }
+
+        mostrarServicios();
+
+        // ✅ Enlazar botones correctamente
+        document.getElementById('btnMostrarTodo').addEventListener('click', () => filtrar());
+        document.getElementById('btnOferta').addEventListener('click', () => filtrar('Oferta de voluntariado'));
+        document.getElementById('btnPeticion').addEventListener('click', () => filtrar('Petición de voluntariado'));
+        document.getElementById('btnMisServicios').addEventListener('click', filtrarMisServicios);
+        document.getElementById('btnServiciosOtros').addEventListener('click', filtrarServiciosDeOtros);
+
+    } catch (err) {
+        console.error('Error al cargar voluntariados:', err);
+        alert('No se pudieron cargar los servicios.');
+    }
 });
