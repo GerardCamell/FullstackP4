@@ -7,10 +7,12 @@ async function mostrarServicios(filtroTipoServicio = '', filtroUsuarioServicio =
     const contenedorServicio = document.getElementById('contenedorServicios');
     contenedorServicio.innerHTML = '';
 
+    console.log("Tipos reales:", listaVoluntariados.map(v => v.tipo));
+
     const serviciosFiltrados = listaVoluntariados.filter(v =>
-  (filtroTipoServicio === '' || v.tipo.toLowerCase().includes(filtroTipoServicio.toLowerCase())) &&
-  (filtroUsuarioServicio === '' || v.creadoPor.name === filtroUsuarioServicio)
-);
+        (filtroTipoServicio === '' || v.tipo.toLowerCase() === filtroTipoServicio.toLowerCase()) &&
+        (filtroUsuarioServicio === '' || v.creadoPor.name === filtroUsuarioServicio)
+    );
 
     serviciosFiltrados.forEach(v => {
         const tarjetaServicios = document.createElement('div');
@@ -74,10 +76,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         mostrarServicios();
 
-        // ✅ Enlazar botones correctamente
+        //Enlazar botones correctamente
         document.getElementById('btnMostrarTodo').addEventListener('click', () => filtrar());
-        document.getElementById('btnOferta').addEventListener('click', () => filtrar('Oferta de voluntariado'));
-        document.getElementById('btnPeticion').addEventListener('click', () => filtrar('Petición de voluntariado'));
+        document.getElementById('btnOferta').addEventListener('click', () => filtrar('Oferta'));
+        document.getElementById('btnPeticion').addEventListener('click', () => filtrar('Petición'));
         document.getElementById('btnMisServicios').addEventListener('click', filtrarMisServicios);
         document.getElementById('btnServiciosOtros').addEventListener('click', filtrarServiciosDeOtros);
 
