@@ -1,7 +1,7 @@
-import { Schema, model } from 'mongoose';
+import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 
-const usuarioSchema = new Schema({
+const usuarioSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -28,8 +28,7 @@ const usuarioSchema = new Schema({
   timestamps: true
 });
 
-//Añadimos hash por seguridad
-
+// Hash automático de la contraseña
 usuarioSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
   const salt = await bcrypt.genSalt(10);
@@ -37,9 +36,13 @@ usuarioSchema.pre('save', async function(next) {
   next();
 });
 
-// Método de instancia para comparar password plain vs hash
+
 usuarioSchema.methods.comparePassword = function(candidate) {
   return bcrypt.compare(candidate, this.password);
 };
 
-export const Usuario = model('Usuario', usuarioSchema);
+
+const Usuario = mongoose.models.Usuario 
+  || mongoose.model('Usuario', usuarioSchema);
+
+export default Usuario;

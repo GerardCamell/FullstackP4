@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FULLSCAT</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="bg-custom">
+
+    <div id="nav-placeholder"></div>
+
+    <script>
+    window.addEventListener('DOMContentLoaded', async () => {
+    
+    const resp = await fetch('./navbar.html');
+    const navHtml = await resp.text();
+    document.getElementById('nav-placeholder').innerHTML = navHtml;
+
+    
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.src = '../js/navbar.js';
+    document.body.appendChild(script);
+    });
+    </script>
+
+    <!--- WELCOME page -->
+    <div class="pestañas expand-ms" id="contenido">
+        <section class="logoTab" id="logoTab">
+            
+            <div class="introduccionContenedor">
+                <header class="text-black text-center py-0 text-center" id="generalBackground">
+                    <div class="container ">
+                        <img src="../img/portada/fotoportada23.png" alt="Portada del sitio" class="img-fluid mb-3 mt-3 rounded">
+                    </div>
+            
+                    <div class="container custom-container shadow-sm text-center rounded px-1 ">
+                        <div class="text-center container-fluid">
+                            <p><br><strong>Bienvenidos a nuestra plataforma</strong>, un espacio dedicado a la gestión de voluntariados para apoyar a las personas mayores. 
+                            Nuestro objetivo es conectar a voluntarios con personas mayores que necesitan compañía, asistencia o actividades que enriquezcan su día a día. 
+                            A través de esta web, podrás encontrar oportunidades para hacer una diferencia significativa en la vida de los demás, ya sea ayudando con tareas cotidianas, 
+                            compartiendo momentos de compañía o participando en actividades recreativas. Juntos, podemos crear una comunidad más solidaria y cercana para nuestros mayores.<br><br></p>
+                        </div>
+                    </div>
+                    
+                    <!-- Imágenes -->
+                    <div class="container text-center mt-3">
+                        <div class="row justify-content-center">
+                            <div class="col-6 col-lg-3">
+                                <img src="../img/portada/asistenciamedica.png" alt="Asistencia médica" class="img-fluid shadow rounded mt-3 mb-5">
+                            </div>
+                            <div class="col-6 col-lg-3">
+                                <img src="../img/portada/soportefinanciero.png" alt="Soporte financiero" class="img-fluid shadow rounded mt-3 mb-5">
+                            </div>
+                            <div class="col-6 col-lg-3">
+                                <img src="../img/portada/bienestarpersonal.png" alt="Bienestar personal" class="img-fluid shadow rounded mt-3 mb-5">
+                            </div>
+                            <div class="col-6 col-lg-3">
+                                <img src="../img/portada/donaciones.png" alt="Donaciones" class="img-fluid shadow rounded mt-3 mb-5">
+                            </div>
+                        </div>
+                    </div>
+                    
+                </header>
+            </div>  
+           
+        </section>
+   
+
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>  
+      
+      
+</body>
+</html>
